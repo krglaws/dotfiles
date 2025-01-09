@@ -10,3 +10,6 @@ HISTCONTROL=ignoreboth
 HISTSIZE=1000
 shopt -s histappend
 
+search () {
+    grep -Irn "$*" --exclude-dir ./.git
+}
