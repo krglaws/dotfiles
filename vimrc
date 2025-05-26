@@ -1,24 +1,26 @@
-source $VIMRUNTIME/vimrc_example.vim
+" Get the defaults that most users want.
+source $VIMRUNTIME/defaults.vim
 
+" tabs and stuff
 set shiftwidth=4
 set tabstop=4
 set expandtab
+set autoindent
+autocmd FileType typescriptreact setlocal shiftwidth=2 softtabstop=2 expandtab
 
+" line numbers
 set number
 set relativenumber
 
+" searching
 set hlsearch
-set autoindent
 
-" backup settings
+" backup/swap/undo config
+call mkdir("~/.vimtmp", "p")
 set backup
 set backupdir=~/.vimtmp//,.
-
-" swap files
 set swapfile
 set directory=~/.vimtmp//,.
-
-" undo files
 set undofile
 set undodir=~/.vimtmp//,.
 
@@ -41,6 +43,7 @@ call plug#begin()
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'alessandroyorba/alduin'
 
 call plug#end()
 
@@ -48,15 +51,10 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> gd <plug>(lsp-peek-definition)
-    "nmap <buffer> gd <plug>(lsp-peek-implementation)
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gi <plug>(lsp-peek-implementation)
     nmap <buffer> gr <plug>(lsp-references)
-    "nmap <buffer> gu <plug>(lsp-type-definition)
-    "nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    "nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    "nmap <buffer> gr <plug>(lsp-references)
-    "nmap <buffer> gi <plug>(lsp-implementation)
-    "nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> gu <plug>(lsp-type-definition)
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
@@ -64,8 +62,8 @@ function! s:on_lsp_buffer_enabled() abort
     nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
     let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
+    autocmd! BufWritePre *.py,*.rs,*.go call execute('LspDocumentFormatSync')
+
     " refer to doc to add more commands
 endfunction
 
@@ -74,3 +72,5 @@ augroup lsp_install
     " call s:on_lsp_buffer_enabled only for languages that has the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+
+colorscheme alduin
