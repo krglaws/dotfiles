@@ -14,12 +14,13 @@ autocmd FileType typescriptreact setlocal shiftwidth=2 tabstop=2 expandtab
 " line numbers
 set number
 set relativenumber
+noremap <leader>n :set number! relativenumber!<CR>
 
 " searching
 set hlsearch
 
 " backup/swap/undo config
-call mkdir("~/.vimtmp", "p")
+call mkdir($HOME . "/.vimtmp", "p")
 set backup
 set backupdir=~/.vimtmp//,.
 set swapfile
@@ -30,9 +31,18 @@ set undodir=~/.vimtmp//,.
 " syntax highlighting for lines > 3000 chars
 set synmaxcol=0
 
+" no alarms and no surprises please
+set belloff=all
+
+" go to cursor position at last close
+autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+
 " Install vim-plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob($HOME . '/.vim/autoload/plug.vim'))
+  silent !curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
@@ -66,6 +76,7 @@ function! s:on_lsp_buffer_enabled() abort
 
     let g:lsp_format_sync_timeout = 1000
     "autocmd! BufWritePre *.py,*.js,*.ts,*.jsx,*.tsx,*.go call execute('LspDocumentFormatSync')
+    autocmd! BufWritePre *.go call execute('LspDocumentFormatSync')
 
     " refer to doc to add more commands
 endfunction
