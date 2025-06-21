@@ -1,8 +1,10 @@
 #!/bin/bash
 
+FULLPATH=$(cd $(dirname $0) && pwd)
+
 # vim stuff
-ln -f ./vimrc ~/.vimrc
+ln -fs "${FULLPATH}/vimrc" ~/.vimrc
 
 # bashrc
-ln -f ./bashrc ~/.bashrc
+ln -fs "${FULLPATH}/bashrc" ~/.bashrc
 
