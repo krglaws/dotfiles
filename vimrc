@@ -56,6 +56,7 @@ call plug#begin()
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'alessandroyorba/alduin'
 
 call plug#end()
@@ -87,7 +88,9 @@ augroup lsp_install
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-colorscheme alduin
+if !empty(globpath(&rtp, 'colors/alduin.vim'))
+    colorscheme alduin
+endif
 
 " cheatsheet
 "MISC:
