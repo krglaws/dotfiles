@@ -18,6 +18,7 @@ noremap <leader>n :set number! relativenumber!<CR>
 
 " searching
 set hlsearch
+nnoremap <leader>f :!grep --exclude-dir .git -Irn <cword \| less<CR>
 
 " backup/swap/undo config
 call mkdir($HOME . "/.vimtmp", "p")
