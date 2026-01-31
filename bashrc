@@ -116,6 +116,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
+export EDITOR=vim
+export VISUAL=$EDITOR
+
 set -o vi
 
 export NVM_DIR="$HOME/.nvm"

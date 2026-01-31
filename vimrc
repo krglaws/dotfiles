@@ -1,6 +1,15 @@
 " Get the defaults that most users want.
 source $VIMRUNTIME/defaults.vim
 
+" no noises
+set belloff=all
+
+" syntax highlighting for lines > 3000 chars
+set synmaxcol=0
+
+" reset syntax highlighting
+nnoremap <leader>s :syntax sync fromstart<CR>
+
 " tabs and stuff
 set shiftwidth=4
 set tabstop=4
@@ -29,11 +38,8 @@ set directory=~/.vimtmp//,.
 set undofile
 set undodir=~/.vimtmp//,.
 
-" syntax highlighting for lines > 3000 chars
-set synmaxcol=0
-
-" no alarms and no surprises please
-set belloff=all
+" run the current file
+nnoremap <leader>r :!%:p
 
 " go to cursor position at last close
 autocmd BufReadPost *
@@ -78,7 +84,7 @@ function! s:on_lsp_buffer_enabled() abort
 
     let g:lsp_format_sync_timeout = 1000
     "autocmd! BufWritePre *.py,*.js,*.ts,*.jsx,*.tsx,*.go call execute('LspDocumentFormatSync')
-    autocmd! BufWritePre *.go call execute('LspDocumentFormatSync')
+    autocmd! BufWritePre *.go,*.sh call execute('LspDocumentFormatSync')
 
     " refer to doc to add more commands
 endfunction
