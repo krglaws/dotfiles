@@ -68,6 +68,16 @@ Plug 'alessandroyorba/alduin'
 
 call plug#end()
 
+" clangd: index the whole project so cross-file references work, and stop
+" completion from inserting #include lines. This must be set before
+" vim-lsp-settings starts a server, so it cannot live inside
+" s:on_lsp_buffer_enabled(), which only runs once a server is already up.
+let g:lsp_settings = {
+\  'clangd': {
+\    'args': ['--background-index', '--header-insertion=never', '--completion-style=detailed'],
+\  },
+\}
+
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
@@ -79,8 +89,12 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
+
+    # scroll help window in normal mode AND insert mode
     nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
     nnoremap <buffer> <expr><c-b> lsp#scroll(-4)
+    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr><c-b> lsp#scroll(-4)
 
     let g:lsp_format_sync_timeout = 1000
     "autocmd! BufWritePre *.py,*.js,*.ts,*.jsx,*.tsx,*.go call execute('LspDocumentFormatSync')
